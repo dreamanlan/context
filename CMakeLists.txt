@@ -197,13 +197,13 @@ target_include_directories(boost_context PUBLIC include)
 
 target_link_libraries(boost_context
   PUBLIC
-    Boost::assert
-    Boost::config
-    Boost::core
-    Boost::mp11
-    Boost::pool
-    Boost::predef
-    Boost::smart_ptr
+    #Boost::assert
+    #Boost::config
+    #Boost::core
+    #Boost::mp11
+    #Boost::pool
+    #Boost::predef
+    #Boost::smart_ptr
 )
 
 target_compile_definitions(boost_context
