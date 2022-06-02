@@ -1,2 +1,8 @@
+build/build64
+build/build32
+build/build_ios
+build/build_osx
+build/build.Android*
+build/build_*
 *~
 *.swp
