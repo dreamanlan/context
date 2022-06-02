@@ -3,5 +3,5 @@ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/ios.toolchain.cmake -DPLATFORM=OS64 -GXcod
 cd ..
 cmake --build build_ios --config Release
 mkdir -p ./Plugins/iOS/
-cp ./build_ios/Release-iphoneos/libboost_contextt.a ./Plugins/iOS/libboost_contextt.a
+cp ./build_ios/Release-iphoneos/libboost_context.a ./Plugins/iOS/libboost_context.a
 
