@@ -23,3 +23,5 @@ boost.context requires C++11!
 ***
 In addition to the Boost pool(so pooled_fixedsize_stack is not available), this fork adds the boost file 
 that the base usage relies on.
+
+Cmake builds a library named libboost_contex.lib, which needs to be changed on Windows as prompted by boost.
