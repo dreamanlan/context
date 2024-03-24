@@ -156,11 +156,38 @@ endif()
 
 set(_asm_suffix ${BOOST_CONTEXT_ARCHITECTURE}_${BOOST_CONTEXT_ABI}_${BOOST_CONTEXT_BINARY_FORMAT}_${BOOST_CONTEXT_ASSEMBLER}${BOOST_CONTEXT_ASM_SUFFIX})
 
-set(ASM_SOURCES
-  src/asm/make_${_asm_suffix}
-  src/asm/jump_${_asm_suffix}
-  src/asm/ontop_${_asm_suffix}
-)
+if(APPLE AND BOOST_CONTEXT_ARCHITECTURE STREQUAL arm64)
+set(_asm_suffix_crosscompile x86_64_sysv_macho_${BOOST_CONTEXT_ASSEMBLER}${BOOST_CONTEXT_ASM_SUFFIX})
+endif()
+
+message("cross compile suffix:" ${_asm_suffix_crosscompile})
+
+if(APPLE AND BOOST_CONTEXT_ARCHITECTURE STREQUAL arm64)
+  set(ARM_ASM_SOURCES
+    src/asm/make_${_asm_suffix}
+    src/asm/jump_${_asm_suffix}
+    src/asm/ontop_${_asm_suffix}
+  )
+  set(X64_ASM_SOURCES
+    src/asm/make_${_asm_suffix_crosscompile}
+    src/asm/jump_${_asm_suffix_crosscompile}
+    src/asm/ontop_${_asm_suffix_crosscompile}
+  )
+  set(ASM_SOURCES
+    ${ARM_ASM_SOURCES}
+    ${X64_ASM_SOURCES}
+  )
+  set_property(SOURCE ${ARM_ASM_SOURCES} APPEND PROPERTY COMPILE_OPTIONS "-arch" "arm64")
+  set_property(SOURCE ${X64_ASM_SOURCES} APPEND PROPERTY COMPILE_OPTIONS "-arch" "x86_64")
+else()
+  set(ASM_SOURCES
+    src/asm/make_${_asm_suffix}
+    src/asm/jump_${_asm_suffix}
+    src/asm/ontop_${_asm_suffix}
+  )
+endif()
+
+message(${ASM_SOURCES})
 
 unset(_asm_suffix)
 
@@ -177,6 +204,7 @@ if(BOOST_CONTEXT_IMPLEMENTATION STREQUAL "fcontext")
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set_property(SOURCE ${ASM_SOURCES} APPEND PROPERTY COMPILE_OPTIONS "-x" "assembler-with-cpp")
   endif()
+
 else()
   set(IMPL_SOURCES
     src/continuation.cpp
